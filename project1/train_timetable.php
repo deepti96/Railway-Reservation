@@ -13,12 +13,12 @@
 <?php
   $servername = "localhost";
   $username = "root";
-  $password = "*****"; // enter your password
+  $password = ""; // enter your password
   $dbName="train_test";
   // Create connection
   $conn = new mysqli($servername, $username, $password,$dbName);
   // Check connection
-  if ($conn->connect_error) {
+  if ($conn->connect_error) { 
      die("Connection failed: " . $conn->connect_error);
   }
 ?>

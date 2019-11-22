@@ -1,7 +1,7 @@
 <?php
   $servername = "localhost";
   $username = "root";
-  $password = "*****"; // enter your password
+  $password = ""; // enter your password
   $dbName="train_test";
   // Create connection
   $conn = new mysqli($servername, $username, $password,$dbName);
@@ -13,7 +13,7 @@
 
 <?php
 	$pnr = $_POST["pnr"];
-	echo "pnr: ".$pnr;
+	echo "<font style='color: #352e82; size: 30px;'>pnr: ".$pnr."</font>";
 	$sql = "delete from train_user where pnr=".$pnr.";";
 	mysqli_query($conn,$sql);
 ?>

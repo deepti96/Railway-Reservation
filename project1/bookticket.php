@@ -10,7 +10,7 @@
 <?php
   $servername = "localhost";
   $username = "root";
-  $password = "*****"; // enter your password
+  $password = ""; // enter your password
   $dbName="train_test";
   // Create connection
   $conn = new mysqli($servername, $username, $password,$dbName);
@@ -29,32 +29,33 @@ $today = date('Y-m-d');
 
 
 
- //echo "First date".$date;
+ /*echo "First date".$date;
  $choose_date = $date;
 
 $sepparator = '/';
 $parts = explode($sepparator, $date);
 $month = (int)$parts[1];
 $day = (int)$parts[0];
-$year = (int)$parts[2];
 $date = $parts[2]."-".$parts[1]."-".$parts[0];
 session_start();
 
-$dayOfWeek = date("D", mktime(0, 0, 0, $month , $day, $year));
-
+$dayOfWeek = date("D", mktime(0, 0, 0, $month , $day, $year));*/
+session_start();
  ?>
 
  <?php
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
   $sql="select c.* from train_days as a,train_days as b,train_info as c where a.station='".$from."' and b.station='".$to."' and a.train_no=b.train_no and a.train_no=c.train_no and a.train_no IN (SELECT train_no from seat_available where date='".$date."');";
   $result = $conn->query($sql);
-  if ($result->num_rows > 0) {
+  //$rowcount=mysqli_num_rows($result);
+  if (!empty($result) && $result->num_rows > 0) {
+  //if($rowcount>0){
     ?>
 
     <center style="color:red"><h2>Available Trains</h2></center>
     <center>
   <table class='table table-dark table-hover' width="100px" >
-    <font style="color:orange"><tr><th>Train Number</th><th>Train Name</th><th>Source</th><th>Destination</th><th>Cost</th><th>Date</th><th>Day</th></tr></font>
+    <font style="color:orange"><tr><th>Train Number</th><th>Train Name</th><th>Source</th><th>Destination</th><th>Cost</th><th>Date</th></tr></font>
 
 
     <?php
@@ -66,7 +67,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $d11=$d1->fetch_assoc();
         $d22=$d2->fetch_assoc();
         $cost=($d22['distance']-$d11['distance'])*0.81;
-    echo "<tr><td><a href='train_timetable.php?train=".$row['train_no']."' target='_blank'>" .$row["train_no"]. "</a></td><td> " . $row["train"]. "</td><td> " .$row["source"]. "</td><td>".$row["destination"]."</td><td>".$cost."</td><td>".$date."</td><td>".$dayOfWeek."</td><td>"."<a href='bookdetails.php'><button type='button' class='btn btn-success'>Book Ticket</button></a>"."</td></tr>";
+    echo "<tr><td><a href='train_timetable.php?train=".$row['train_no']."' target='_blank'>" .$row["train_no"]. "</a></td><td> " . $row["train"]. "</td><td> " .$row["source"]. "</td><td>".$row["destination"]."</td><td>".$cost."</td><td>".$date."</td><td>"."<a href='bookdetails.php'><button type='button' class='btn btn-success'>Book Ticket</button></a>"."</td></tr>";
 
 
       }
@@ -81,7 +82,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
      $sql="select c.*,d.date,a.day from train_days as a,train_days as b,train_info as c,seat_available as d where a.station='".$from."' and b.station='".$to."' and a.train_no=b.train_no and a.train_no=c.train_no and d.train_no=a.train_no and d.date>='".$today."';";
   $result = $conn->query($sql);
-  if ($result->num_rows > 0) {
+  //$rowcount=mysqli_num_rows($result);
+  if (!empty($result) && $result->num_rows > 0){
+  //if($rowcount>0) {
 
   	echo "<table class='table table-dark table-hover' width='100px'><font style='color:orange'><tr><th>Train Number</th><th>Train Name</th><th>Source</th><th>Destination</th><th>Cost</th><th>Date</th><th>Day</th></tr></font>";
      while($row1 = $result->fetch_assoc()) {
